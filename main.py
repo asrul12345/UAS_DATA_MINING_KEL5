@@ -1,16 +1,38 @@
-# This is a sample Python script.
+import math
+from collections import Counter
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+data = [
+    ("Richard", 175, 75, "L"),
+    ("Deby", 165, 60, "M"),
+    ("Mike", 166, 77, "L"),
+    ("Tom", 178, 73, "L"),
+    ("Bella", 174, 62, "M"),
+    ("Jhon", 169, 68, "M"),
+    ("Ann", 168, 64, "M"),
+    ("Jack", 170, 70, "L"),
+    ("Alea", 160, 65, "?"),
+]
 
+def euclidean_distance(titik1, titik2):
+    return math.sqrt((titik1[0] - titik2[0])**2 + (titik1[1] - titik2[1])**2)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def cari_tetangga(k, data, target):
+    jarak = []
+    for item in data:
+        jarak.append((euclidean_distance((item[1], item[2]), target), item[3]))
+    jarak.sort()
+    tetangga = jarak[:k]
+    return tetangga
 
+def mayoritas_pilih(tetangga):
+    vote_count = Counter(tetangga[1] for tetangga in tetangga)
+    return vote_count.most_common(1)[0][0]
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+alea_data = (160, 65)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+K = 3
+tetangga_terdekat = cari_tetangga(K, data, alea_data)
+
+alea_size = mayoritas_pilih(tetangga_terdekat)
+
+print(f"Ukuran baju Alea: {alea_size}")
